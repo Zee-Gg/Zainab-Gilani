@@ -1,6 +1,6 @@
 "use client"
 
-import { Github, Linkedin, Mail, ArrowUpRight, Sparkles, Code2, Palette, Zap } from "lucide-react"
+import { ArrowUpRight, Sparkles, Code2, Palette, Zap } from "lucide-react"
 
 export default function Footer() {
   return (

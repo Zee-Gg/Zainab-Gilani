@@ -755,6 +755,7 @@
 
 import { useState } from "react"
 import { Star, ExternalLink, Github, X } from "lucide-react"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import ProjectsList from "./project-card"
 
@@ -871,7 +872,7 @@ export default function ProjectsSection() {
             <button onClick={() => setSelectedProject(null)} className="absolute top-4 right-4 text-white hover:text-[#EF7A1E] transition">
               <X className="h-6 w-6" />
             </button>
-            <img src={selectedProject.image} alt={selectedProject.title} className="rounded-xl mb-6" />
+            <Image src={selectedProject.image} alt={selectedProject.title} className="rounded-xl mb-6" width={600} height={400} />
             <h3 className="text-2xl font-bold text-white mb-3">{selectedProject.title}</h3>
             <p className="text-white/70 mb-6">{selectedProject.longDescription}</p>
             <div className="mb-6">

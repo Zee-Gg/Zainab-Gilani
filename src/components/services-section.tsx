@@ -1,7 +1,6 @@
 
 "use client"
 
-import { header } from "framer-motion/client";
 
 import { useState } from "react"
 import { Code2, Palette, Monitor } from "lucide-react"

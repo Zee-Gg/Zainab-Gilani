@@ -183,7 +183,7 @@ import type React from "react"
 import { useState } from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { Mail, Phone, Linkedin, Github, Twitter, MessageSquare, PenTool, Layers, User, Edit3, Clock } from "lucide-react"
+import { Mail, MessageSquare, PenTool, Layers, User, Edit3, Clock } from "lucide-react"
 
 export default function ContactSection() {
   const [formData, setFormData] = useState({

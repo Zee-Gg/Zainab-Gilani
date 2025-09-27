@@ -7,35 +7,6 @@ import { motion } from "framer-motion"
 import { useEffect, useState } from "react"
 
 // Animated Counter Component
-function AnimatedCounter({ target }: { target: number }) {
-  const [count, setCount] = useState(0)
-
-  useEffect(() => {
-    const duration = 1000
-    const increment = target / (duration / 10)
-    const interval = setInterval(() => {
-      setCount(prev => {
-        if (prev + increment >= target) {
-          clearInterval(interval)
-          return target
-        }
-        return Math.ceil(prev + increment)
-      })
-    }, 10)
-    return () => clearInterval(interval)
-  }, [target])
-
-  return (
-    <motion.h3
-      className="text-3xl font-bold text-white"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      {count}+
-    </motion.h3>
-  )
-}
 
 export default function HeroSection() {
   return (
