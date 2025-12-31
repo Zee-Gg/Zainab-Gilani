@@ -57,17 +57,18 @@ const Chatbot: React.FC = () => {
         body: JSON.stringify({ inputText }),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
-        console.error('API error response:', response.status, errorData);
-        throw new Error(`API error: ${response.status} - ${errorData.error || 'Unknown error'}`);
-      }
+      console.log('API Response status:', response.status);
+      console.log('API Response ok:', response.ok);
 
       const data = await response.json();
-      
+      console.log('API Response data:', data);
+
+      if (!response.ok) {
+        throw new Error(data.error || `API error: ${response.status}`);
+      }
+
       if (!data.content) {
-        console.error('No content in response:', data);
-        throw new Error('No response content received');
+        throw new Error('No response content received from AI');
       }
 
       const aiMessage: Message = {
@@ -80,10 +81,10 @@ const Chatbot: React.FC = () => {
       setMessages(prev => [...prev, aiMessage]);
     } catch (error) {
       console.error('Error sending message:', error);
-      const errorText = error instanceof Error ? error.message : 'Unknown error';
+      const errorText = error instanceof Error ? error.message : 'Unknown error occurred';
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: `Sorry, I encountered an issue (${errorText}). Please try again or contact Zainab directly using the contact buttons above.`,
+        text: `Sorry, I encountered an issue: ${errorText}. Please try again or contact Zainab using the contact buttons above.`,
         isUser: false,
         timestamp: new Date()
       };
@@ -114,7 +115,7 @@ const Chatbot: React.FC = () => {
 
       {/* Chat Window */}
       {isOpen && (
-        <div className={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 bg-card border border-border rounded-2xl shadow-2xl z-50 transition-all duration-300 ${
+        <div className={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 bg-card border border-border rounded-2xl shadow-2xl z-50 transition-all duration-300 flex flex-col overflow-hidden ${
           isMinimized ? 'w-72 sm:w-80 h-16' : 'w-[calc(100vw-2rem)] sm:w-96 h-[60vh] sm:h-[600px] max-h-[600px]'
         }`}>
           {/* Chat Header */}

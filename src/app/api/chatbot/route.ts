@@ -4,27 +4,105 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
+  console.log('=== Chatbot API Called ===');
+  
   try {
-    const { inputText } = await req.json();
+    const body = await req.json();
+    console.log('Request body received:', typeof body);
+    
+    const { inputText } = body;
+    
     if (!inputText || typeof inputText !== 'string') {
-      return NextResponse.json({ error: 'Invalid input provided.' }, { status: 400 });
+      console.error('Invalid input:', inputText);
+      return NextResponse.json(
+        { error: 'Invalid input provided.', status: 'error' }, 
+        { status: 400 }
+      );
     }
 
-    // Call Groq API securely from the server
     const apiKey = process.env.GROQ_API_KEY;
+    console.log('API Key exists:', !!apiKey);
+    
     if (!apiKey || apiKey.trim() === '') {
-      console.error('GROQ_API_KEY is not set or empty');
-      return NextResponse.json({ error: 'API key not configured.' }, { status: 500 });
+      console.error('GROQ_API_KEY is missing');
+      return NextResponse.json(
+        { error: 'API key not configured.', status: 'error' }, 
+        { status: 500 }
+      );
     }
 
-    console.log('Calling Groq API with input:', inputText.substring(0, 50));
+    console.log('Input text:', inputText.substring(0, 30) + '...');
 
-    const requestBody = {
-      model: 'llama-3.1-70b-versatile',
+    const requestPayload = {
+      model: 'llama-3.1-8b-instant',
       messages: [
         {
           role: 'system',
-          content: 'You are Zainab\'s AI assistant. Keep responses concise and friendly. Represent Zainab as a web developer and UI/UX designer.'
+          content: `You are the AI assistant for Zainab Gilani's personal portfolio website. Your goal is to help visitors learn about Zainab, her projects, skills, and services.
+
+          About Zainab Gilani:
+          - A passionate Full Stack Developer and UI/UX Designer.
+          - Specializes in building modern, responsive, and user-friendly web applications.
+          - Experienced with Next.js, React, TypeScript, Tailwind CSS, and Node.js.
+          - Focuses on creating seamless digital experiences that solve real-world problems.
+
+          Projects:
+          1. TechVision (Electronics Store):
+             - A modern e-commerce platform for electronics.
+             - Features: Product catalog, shopping cart, user authentication, and secure checkout.
+             - Tech Stack: Next.js, Tailwind CSS, Stripe.
+             - Image: /TV.png
+
+          2. AskPDF (AI PDF Chat):
+             - An AI-powered tool that allows users to chat with their PDF documents.
+             - Features: PDF upload, text extraction, AI-based Q&A.
+             - Tech Stack: Python, LangChain, OpenAI API.
+             - Image: /AskPDF.png
+
+          3. Lushscape (Gardening Store):
+             - An online store for gardening supplies and plants.
+             - Features: Beautiful UI, plant care guides, and inventory management.
+             - Tech Stack: React, Node.js, MongoDB.
+             - Image: /Lushscape.png
+
+          4. SwiftLink (URL Shortener):
+             - A fast and efficient URL shortening service.
+             - Features: Custom aliases, analytics dashboard, and QR code generation.
+             - Tech Stack: Next.js, PostgreSQL, Prisma.
+             - Image: /SL.png
+
+          5. DocuPrint (Printing Service):
+             - A web app for ordering custom printing services.
+             - Features: File upload, print customization, and order tracking.
+             - Tech Stack: Vue.js, Firebase.
+             - Image: /DP.png
+
+          6. PixelPerfect (Design Portfolio):
+             - A showcase of creative design work.
+             - Features: Gallery view, project details, and contact form.
+             - Tech Stack: HTML, CSS, JavaScript.
+             - Image: /PP.png
+
+          7. AutoBazaar (Car Marketplace):
+             - A platform for buying and selling cars.
+             - Features: Advanced search filters, user listings, and messaging system.
+             - Tech Stack: MERN Stack (MongoDB, Express, React, Node.js).
+             - Image: /AB.png
+
+          Services:
+          - Web Development: Building responsive and performant websites.
+          - UI/UX Design: Creating intuitive and visually appealing interfaces.
+          - Full Stack Solutions: End-to-end development from database to frontend.
+          - API Integration: Connecting third-party services and APIs.
+
+          Contact:
+          - Encourage users to use the "Contact Me" section on the website.
+          - Mention that Zainab is open to freelance opportunities and collaborations.
+
+          Tone:
+          - Professional, friendly, and helpful.
+          - Keep responses concise (2-3 sentences) unless asked for detailed information.
+          - If you don't know the answer, politely suggest contacting Zainab directly.`
         },
         {
           role: 'user',
@@ -35,58 +113,74 @@ export async function POST(req: NextRequest) {
       temperature: 0.7
     };
 
-    console.log('Request body:', JSON.stringify(requestBody).substring(0, 100));
+    console.log('Making Groq API call...');
 
     const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify(requestBody),
+      body: JSON.stringify(requestPayload)
     });
 
     console.log('Groq response status:', groqRes.status);
 
     if (!groqRes.ok) {
       const errorText = await groqRes.text();
-      console.error('Groq API error:', groqRes.status);
-      console.error('Groq error response:', errorText);
+      console.error('Groq API error response:', errorText);
       
-      try {
-        const errorData = JSON.parse(errorText);
-        const errorMsg = errorData.error?.message || errorText;
-        return NextResponse.json({ 
-          error: `Groq API error: ${groqRes.status}`,
-          details: errorMsg
-        }, { status: 500 });
-      } catch {
-        return NextResponse.json({ 
-          error: `Groq API error: ${groqRes.status}`,
-          details: errorText.substring(0, 200)
-        }, { status: 500 });
-      }
+      return NextResponse.json(
+        { 
+          error: `API returned ${groqRes.status}`,
+          details: errorText,
+          status: 'error'
+        }, 
+        { status: 500 }
+      );
     }
 
-    const data = await groqRes.json();
-    console.log('Groq response data received');
-    
-    const content = data.choices?.[0]?.message?.content;
+    const groqData = await groqRes.json();
+    console.log('Groq response received');
+
+    const content = groqData.choices?.[0]?.message?.content;
     
     if (!content) {
-      console.error('No content in Groq response:', JSON.stringify(data).substring(0, 200));
-      return NextResponse.json({ error: 'No response content received.' }, { status: 500 });
+      console.error('No content in response:', groqData);
+      return NextResponse.json(
+        { error: 'No response generated', status: 'error' }, 
+        { status: 500 }
+      );
     }
 
-    console.log('Successfully generated response');
-    return NextResponse.json({ content });
-  } catch (error) {
-    console.error('Chatbot error:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    console.error('Full error:', errorMessage);
+    console.log('Response generated successfully');
     return NextResponse.json({ 
-      error: `Internal server error`,
-      details: errorMessage
-    }, { status: 500 });
+      content,
+      status: 'success'
+    });
+
+  } catch (error) {
+    console.error('=== ERROR in chatbot API ===');
+    console.error('Error type:', error instanceof Error ? 'Error' : typeof error);
+    
+    if (error instanceof SyntaxError) {
+      console.error('JSON parsing error:', error.message);
+      return NextResponse.json(
+        { error: 'Invalid JSON in request', status: 'error' },
+        { status: 400 }
+      );
+    }
+
+    const errorMsg = error instanceof Error ? error.message : String(error);
+    console.error('Error message:', errorMsg);
+    
+    return NextResponse.json(
+      { 
+        error: 'Internal server error',
+        details: errorMsg,
+        status: 'error'
+      },
+      { status: 500 }
+    );
   }
 }
