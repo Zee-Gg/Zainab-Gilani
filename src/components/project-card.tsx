@@ -33,10 +33,10 @@ export default function ProjectsList({ projects, onProjectClick }: ProjectsListP
           onClick={() => onProjectClick?.(project)}
         >
           {/* Image */}
-          <div className="relative h-48 overflow-hidden bg-muted">
+          <div className="relative h-40 sm:h-48 overflow-hidden bg-muted">
             {/* Placeholder for image if it fails to load or is missing */}
             <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
-              <span className="text-sm">Project Image</span>
+              <span className="text-xs sm:text-sm">Project Image</span>
             </div>
             {project.image && (
               <img

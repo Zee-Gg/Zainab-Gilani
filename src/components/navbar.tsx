@@ -66,6 +66,36 @@ export default function Navbar() {
             </button>
           </div>
         </div>
+        
+        {/* Mobile Navigation Menu */}
+        {isMenuOpen && (
+          <div className="md:hidden bg-background/95 border-t border-border">
+            <div className="px-4 py-4 space-y-2">
+              {navItems.map((item) => (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  className="block text-muted-foreground hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 hover:bg-secondary"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {item.name}
+                </a>
+              ))}
+              <a
+                href="/Zainab Gilani -CV.pdf"
+                download="Zainab Gilani -CV.pdf"
+                className="block w-full mt-4"
+              >
+                <Button
+                  variant="default"
+                  className="w-full font-medium"
+                >
+                  Download CV
+                </Button>
+              </a>
+            </div>
+          </div>
+        )}
       </div>
     </nav>
   )

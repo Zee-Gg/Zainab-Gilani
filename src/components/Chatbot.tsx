@@ -97,7 +97,7 @@ const Chatbot: React.FC = () => {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 bg-primary hover:bg-primary/90 text-primary-foreground p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-50"
+          className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 bg-primary hover:bg-primary/90 text-primary-foreground p-3 sm:p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-50 active:scale-95"
         >
           <MessageCircle size={24} />
         </button>
@@ -105,20 +105,20 @@ const Chatbot: React.FC = () => {
 
       {/* Chat Window */}
       {isOpen && (
-        <div className={`fixed bottom-6 right-6 bg-card border border-border rounded-2xl shadow-2xl z-50 transition-all duration-300 ${
-          isMinimized ? 'w-80 h-16' : 'w-96 h-[600px]'
+        <div className={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 bg-card border border-border rounded-2xl shadow-2xl z-50 transition-all duration-300 ${
+          isMinimized ? 'w-72 sm:w-80 h-16' : 'w-[calc(100vw-2rem)] sm:w-96 h-[60vh] sm:h-[600px] max-h-[600px]'
         }`}>
           {/* Chat Header */}
-          <div className="flex items-center justify-between p-4 border-b border-border bg-secondary/30 rounded-t-2xl">
-            <div className="flex items-center space-x-3">
-              <div className="relative">
-                <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-                  <Bot size={20} className="text-primary-foreground" />
+          <div className="flex items-center justify-between p-3 sm:p-4 border-b border-border bg-secondary/30 rounded-t-2xl gap-2">
+            <div className="flex items-center space-x-2 sm:space-x-3 min-w-0">
+              <div className="relative flex-shrink-0">
+                <div className="w-8 sm:w-10 h-8 sm:h-10 bg-primary rounded-full flex items-center justify-center">
+                  <Bot size={18} className="text-primary-foreground sm:w-5 sm:h-5" />
                 </div>
-                <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-card rounded-full"></div>
+                <div className="absolute -bottom-1 -right-1 w-3 h-3 sm:w-4 sm:h-4 bg-green-500 border-2 border-card rounded-full"></div>
               </div>
-              <div>
-                <h3 className="text-foreground font-semibold">Zainab&apos;s Assistant</h3>
+              <div className="hidden sm:block min-w-0">
+                <h3 className="text-foreground font-semibold text-sm truncate">Zainab&apos;s Assistant</h3>
                 <p className="text-xs text-muted-foreground">Always here to help</p>
               </div>
             </div>
@@ -141,7 +141,7 @@ const Chatbot: React.FC = () => {
           {!isMinimized && (
             <>
               {/* Messages Area */}
-              <div className="flex-1 overflow-y-auto p-4 h-[440px] space-y-4 bg-background">
+              <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-4 bg-background">
                 {messages.map((message) => (
                   <div
                     key={message.id}
@@ -186,20 +186,20 @@ const Chatbot: React.FC = () => {
               </div>
 
               {/* Input Area */}
-              <div className="p-4 border-t border-border bg-card rounded-b-2xl">
+              <div className="p-3 sm:p-4 border-t border-border bg-card rounded-b-2xl">
                 <div className="flex items-center space-x-2">
                   <input
                     type="text"
                     value={inputText}
                     onChange={(e) => setInputText(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder="Ask me anything about Zainab..."
-                    className="flex-1 bg-secondary border border-border rounded-lg px-4 py-2 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    placeholder="Ask me anything..."
+                    className="flex-1 bg-secondary border border-border rounded-lg px-3 sm:px-4 py-2 text-sm sm:text-base text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                   />
                   <button
                     onClick={sendMessage}
                     disabled={!inputText.trim() || isTyping}
-                    className="bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed text-primary-foreground p-2 rounded-lg transition-all duration-300 hover:scale-105"
+                    className="bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed text-primary-foreground p-2 rounded-lg transition-all duration-300 hover:scale-105 flex-shrink-0"
                   >
                     <Send size={16} />
                   </button>
