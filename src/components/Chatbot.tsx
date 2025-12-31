@@ -58,10 +58,18 @@ const Chatbot: React.FC = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to get response from AI');
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        console.error('API error response:', response.status, errorData);
+        throw new Error(`API error: ${response.status} - ${errorData.error || 'Unknown error'}`);
       }
 
       const data = await response.json();
+      
+      if (!data.content) {
+        console.error('No content in response:', data);
+        throw new Error('No response content received');
+      }
+
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
         text: data.content,
@@ -72,9 +80,10 @@ const Chatbot: React.FC = () => {
       setMessages(prev => [...prev, aiMessage]);
     } catch (error) {
       console.error('Error sending message:', error);
+      const errorText = error instanceof Error ? error.message : 'Unknown error';
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: "I'm having trouble connecting right now. Please try again later or use the contact buttons above to reach Zainab directly!",
+        text: `Sorry, I encountered an issue (${errorText}). Please try again or contact Zainab directly using the contact buttons above.`,
         isUser: false,
         timestamp: new Date()
       };
