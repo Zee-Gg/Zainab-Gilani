@@ -5,7 +5,7 @@ import nodemailer from "nodemailer";
 
 export async function POST(req: Request) {
   try {
-    const { name, email, subject, message } = await req.json();
+    const { name, email, projectType, subject, message } = await req.json();
 
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
@@ -21,8 +21,8 @@ export async function POST(req: Request) {
       from: `"Portfolio Contact" <${process.env.EMAIL_USER}>`,
       replyTo: email,
       to: process.env.EMAIL_USER,
-      subject: subject || `Message from ${name}`,
-      text: `From: ${name} <${email}>\n\n${message}`,
+      subject: subject || `Message from ${name} - ${projectType || 'General Inquiry'}`,
+      text: `From: ${name} <${email}>\nProject Type: ${projectType || 'Not Specified'}\n\n${message}`,
     });
 
     return NextResponse.json({ success: true, message: "✅ Email sent successfully!" });

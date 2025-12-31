@@ -16,13 +16,13 @@ export default function Navbar() {
   ]
 
   return (
-    <nav className="fixed top-0 w-full z-50 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900/95 backdrop-blur-sm border-b border-slate-700">
+    <nav className="fixed top-0 w-full z-50 bg-background/95 backdrop-blur-sm border-b border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <h1 className="text-white text-xl font-bold">
-              Zainab <span className="text-cyan-400">Gilani</span>
+            <h1 className="text-foreground text-xl font-bold">
+              Zainab <span className="text-primary">Gilani</span>
             </h1>
           </div>
 
@@ -33,7 +33,7 @@ export default function Navbar() {
                 <a
                   key={item.name}
                   href={item.href}
-                  className="text-slate-300 hover:text-cyan-400 px-3 py-2 text-sm font-medium transition-colors duration-200"
+                  className="text-muted-foreground hover:text-primary px-3 py-2 text-sm font-medium transition-colors duration-200"
                 >
                   {item.name}
                 </a>
@@ -44,11 +44,12 @@ export default function Navbar() {
           {/* Download CV Button */}
           <div className="hidden md:block">
             <a
-              href="/Zainab Gilani CV.pdf"
-              download="Zainab Gilani CV.pdf"
+              href="/Zainab Gilani -CV.pdf"
+              download="Zainab Gilani -CV.pdf"
             >
               <Button
-                className="bg-cyan-400 hover:bg-cyan-400/90 text-white font-medium px-6 py-2 rounded-lg transition-all duration-200 shadow-md"
+                variant="default"
+                className="font-medium"
               >
                 Download CV
               </Button>
@@ -59,7 +60,7 @@ export default function Navbar() {
           <div className="md:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-white hover:text-cyan-400 p-2"
+              className="text-foreground hover:text-primary p-2"
             >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>

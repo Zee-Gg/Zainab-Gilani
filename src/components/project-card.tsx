@@ -1,6 +1,6 @@
 "use client"
 
-import { Calendar, Eye, Github } from "lucide-react"
+import { Calendar, Eye, Github, ExternalLink } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 type Project = {
@@ -20,83 +20,100 @@ type Project = {
 
 interface ProjectsListProps {
   projects: Project[]
-  onSelect: (project: Project) => void
+  onProjectClick?: (project: Project) => void
 }
 
-export default function ProjectsList({ projects, onSelect }: ProjectsListProps) {
+export default function ProjectsList({ projects, onProjectClick }: ProjectsListProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
       {projects.map((project, index) => (
         <div
           key={index}
-          className="group relative bg-gradient-to-br from-[#002431]/50 to-[#000F18]/50 backdrop-blur-sm rounded-3xl overflow-hidden border border-[#528292]/10 hover:border-[#528292]/30 transition-all duration-500 hover:scale-[1.02] flex flex-col h-full min-h-[500px]"
+          className="group flex flex-col bg-card border border-border rounded-xl overflow-hidden hover:border-primary/50 transition-all duration-300 shadow-sm cursor-pointer"
+          onClick={() => onProjectClick?.(project)}
         >
           {/* Image */}
-          <div className="relative h-48 overflow-hidden">
-            <img
-              src={project.image}
-              alt={project.title}
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#000F18] via-transparent to-transparent opacity-60"></div>
+          <div className="relative h-48 overflow-hidden bg-muted">
+            {/* Placeholder for image if it fails to load or is missing */}
+            <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
+              <span className="text-sm">Project Image</span>
+            </div>
+            {project.image && (
+              <img
+                src={project.image}
+                alt={project.title}
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+            )}
           </div>
 
           {/* Content */}
-          <div className="p-6 space-y-4 flex flex-col flex-1">
-            <div className="flex items-center justify-between text-sm text-white/50">
-              <span className="flex items-center gap-2">
-                <Calendar className="h-3 w-3" /> {project.year}
+          <div className="p-6 flex flex-col flex-1 gap-4">
+            <div className="flex items-center justify-between text-xs text-muted-foreground">
+              <span className="flex items-center gap-1.5">
+                <Calendar className="h-3.5 w-3.5" /> {project.year}
               </span>
-              <span className="flex items-center gap-2">
-                <Eye className="h-3 w-3" /> {project.views}
+              <span className="flex items-center gap-1.5">
+                <Eye className="h-3.5 w-3.5" /> {project.views}
               </span>
             </div>
 
             <div>
-              <h3 className="text-xl font-bold text-white group-hover:text-[#EF7A1E] transition">
+              <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
                 {project.title}
               </h3>
-              <p className="text-white/70 text-sm line-clamp-3">
+              <p className="text-muted-foreground text-sm line-clamp-3 leading-relaxed">
                 {project.description}
               </p>
             </div>
 
             {/* Tech Stack */}
-            <div className="flex flex-wrap gap-2">
-              {project.tech.map((tech, i) => (
+            <div className="flex flex-wrap gap-2 mt-auto pt-4">
+              {project.tech.slice(0, 3).map((tech, i) => (
                 <span
                   key={i}
-                  className="px-2 py-1 bg-[#528292]/20 text-[#528292] text-xs font-medium rounded-md"
+                  className="px-2.5 py-1 text-xs font-medium rounded-md bg-secondary text-secondary-foreground border border-border"
                 >
                   {tech}
                 </span>
               ))}
+              {project.tech.length > 3 && (
+                <span className="px-2.5 py-1 text-xs font-medium rounded-md bg-secondary text-secondary-foreground border border-border">
+                  +{project.tech.length - 3}
+                </span>
+              )}
             </div>
 
             {/* Actions */}
-            <div className="flex gap-3 pt-2 mt-auto">
-              <Button
-                size="sm"
-                className="flex-1 bg-gradient-to-r from-[#EF7A1E] to-[#EF7A1E]/80 text-white rounded-xl"
-                onClick={() => onSelect(project)}
-              >
-                View Project
-              </Button>
-              <Button
-                size="sm"
-                className="flex-1 bg-gradient-to-r from-[#00B4D8] to-[#528292] text-white rounded-xl"
-                onClick={() => window.open(project.liveUrl, "_blank")}
-              >
-                Live
-              </Button>
-              <Button
-                size="sm"
-                variant="outline"
-                className="border border-[#528292]/50 text-[#528292] rounded-xl"
-                onClick={() => window.open(project.githubUrl, "_blank")}
-              >
-                <Github className="h-4 w-4" />
-              </Button>
+            <div className="flex gap-3 pt-4 border-t border-border">
+              {project.liveUrl && (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="flex-1 gap-2"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    window.open(project.liveUrl, "_blank")
+                  }}
+                >
+                  <ExternalLink className="h-4 w-4" />
+                  Live Demo
+                </Button>
+              )}
+              {project.githubUrl && (
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="flex-1 gap-2"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    window.open(project.githubUrl, "_blank")
+                  }}
+                >
+                  <Github className="h-4 w-4" />
+                  Code
+                </Button>
+              )}
             </div>
           </div>
         </div>
