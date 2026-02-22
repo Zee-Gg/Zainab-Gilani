@@ -34,7 +34,7 @@ function Counter({
       setValue(0)
       controls = animate(0, target, {
         duration: 2.2,
-        ease: [0.16, 1, 0.3, 1],
+        ease: [0.16, 1, 0.3, 1] as any,
         onUpdate: (v) => !cancelled && setValue(Math.floor(v)),
         onComplete: () => {
           pauseTimer = setTimeout(() => {
@@ -226,7 +226,7 @@ export default function HeroSection() {
   const up = (delay: number) => ({
     initial: { opacity: 0, y: 28 },
     animate: ready ? { opacity: 1, y: 0 } : {},
-    transition: { duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] as any },
   })
 
   return (

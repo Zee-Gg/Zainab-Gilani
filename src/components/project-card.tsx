@@ -76,7 +76,7 @@ function ProjectCard({
       initial={{ opacity: 0, y: 48 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.65, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.65, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] as any }}
       style={{ perspective: 1000 }}
     >
       <motion.div
@@ -123,7 +123,7 @@ function ProjectCard({
             className="absolute top-3 left-3 px-2.5 py-1 text-[10px] font-semibold tracking-widest uppercase rounded-full bg-background/90 text-foreground border border-border backdrop-blur-sm"
             initial={{ x: -20, opacity: 0 }}
             animate={hovered ? { x: 0, opacity: 1 } : { x: -20, opacity: 0 }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] as any }}
           >
             {project.category}
           </motion.span>
@@ -133,7 +133,7 @@ function ProjectCard({
             className="absolute top-3 right-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-background/90 backdrop-blur-sm border border-border"
             initial={{ x: 20, opacity: 0 }}
             animate={hovered ? { x: 0, opacity: 1 } : { x: 20, opacity: 0 }}
-            transition={{ duration: 0.3, delay: 0.04, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.3, delay: 0.04, ease: [0.22, 1, 0.36, 1] as any }}
           >
             <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
             <span className="text-[10px] text-muted-foreground tracking-wide">{project.status}</span>
@@ -144,7 +144,7 @@ function ProjectCard({
             className="absolute inset-x-0 bottom-0 bg-background/95 backdrop-blur-sm px-4 py-3 flex items-center justify-between border-t border-border"
             initial={{ y: "100%" }}
             animate={hovered ? { y: 0 } : { y: "100%" }}
-            transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] as any }}
           >
             <div className="flex gap-2">
               {project.liveUrl && (
@@ -252,3 +252,6 @@ export default function ProjectsList({ projects, onProjectClick }: ProjectsListP
     </div>
   )
 }
+
+
+
