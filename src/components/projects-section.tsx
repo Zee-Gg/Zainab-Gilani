@@ -180,9 +180,7 @@ export default function ProjectsSection() {
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
             Featured <span className="text-primary">Projects</span>
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            A selection of projects that demonstrate my passion for building solving real-world problems.
-          </p>
+          
         </div>
 
         <ProjectsList projects={visibleProjects} onProjectClick={handleProjectClick} />

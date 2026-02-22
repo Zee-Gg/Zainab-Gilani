@@ -60,9 +60,7 @@ export default function ServicesSection() {
             Creative <span className="text-primary">Services</span>
           </h2>
 
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            I merge innovation with design thinking to create experiences that are not only functional but unforgettable.
-          </p>
+        
         </div>
 
         <div className="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto items-start">

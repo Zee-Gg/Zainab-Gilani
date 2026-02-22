@@ -53,7 +53,7 @@ export default function ExperienceSection() {
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
             Professional <span className="text-primary">Growth</span>
           </h2>
-          <p className="text-muted-foreground">Hands-on experience in AI & frontend development</p>
+          
         </div>
 
         <div className="space-y-8">

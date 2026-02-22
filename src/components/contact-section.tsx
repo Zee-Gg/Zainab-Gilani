@@ -70,7 +70,7 @@ export default function ContactSection() {
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
             Let&apos;s <span className="text-primary">Connect</span>
           </h2>
-          <p className="text-muted-foreground">Have a project in mind? I’d love to hear from you.</p>
+          
         </motion.div>
         
         <motion.form
